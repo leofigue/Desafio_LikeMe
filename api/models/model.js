@@ -1,5 +1,5 @@
 const { pool } = require('../database/connection.js');
-const { Pool } = require("pg");
+
 
 const traePost = async () => {
     const { rows } = await pool.query("SELECT * FROM posts");
