@@ -21,7 +21,7 @@ app.post('/posts', async(req, res, next) =>{
 
     try {
         const { titulo, url, descripcion } = req.body;
-        const filas = await agregaPostt(titulo, url, descripcion)
+        const filas = await agregaPost(titulo, url, descripcion)
         if(filas==0){ 
             return next(new Error('Ocurrió un error al ingresar el post')); 
         } 
