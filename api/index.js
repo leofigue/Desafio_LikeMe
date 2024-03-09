@@ -1,5 +1,7 @@
 require('dotenv').config()
-const { traePost, agregaPost } = require('./models/model.js');
+
+const { traePost, agregaPost, actualizaPost, eliminaPost } = require('./models/model.js');
+
 const express = require('express');
 
 
@@ -34,6 +36,31 @@ app.post('/posts', async(req, res, next) =>{
 
     
 } );
+
+app.put('/posts/like/:id', async(req, res, next)=>{
+    try {
+        await actualizaPost(req.params) 
+        res.send('OK');
+    } catch (error) {
+        next(error);   
+    }
+    
+});
+
+app.delete('/posts/:id', async (req, res, next)=>{
+    try {
+        if(await eliminaPost(req.params)>0){
+            res.send('OK');
+        } 
+        else{
+            res.status(400).send('EL ID enviado no existe');
+        }
+    } catch (error) {
+
+        next(error)       
+    }
+    
+});
 
 // Custom error handling middleware 
 app.use((err, req, res, next) => { 
