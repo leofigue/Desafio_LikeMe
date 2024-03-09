@@ -60,8 +60,18 @@ function App() {
 
   // este método se utilizará en el siguiente desafío
   const eliminarPost = async (id) => {
-    await axios.delete(urlBaseServer + `/posts/${id}`);
-    getPosts();
+    const respuesta = await axios.delete(urlBaseServer + `/posts/${id}`);
+    if(respuesta.data=="OK"){
+      getPosts();
+      alert("El post ha sido eliminado")
+    }
+    else if(respuesta.data=="NOK"){
+      alert("El ID indicado no existe")
+    }
+    else{
+      alert("Ha ocurrido un error al momemnto de eliminar")
+    }
+    
   };
 
   useEffect(() => {
