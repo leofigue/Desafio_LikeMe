@@ -1,27 +1,12 @@
-require('dotenv').config()
-//const { router } =  "./routes/route.js";
 const { traePost, agregaPost, actualizaPost, eliminaPost } = require('./models/model.js');
 
-const express = require('express');
+var router = express.Router();
 
-
-const app = express();
-const cors = require('cors');
-const PORT = process.env.PGPORT || 3000;
-
-
-
-
-app.use(express.json());
-app.use(cors());
-
-//app.use("/posts", router)
-
-app.get('/posts', async (req, res) =>{
+router.get('/posts', async (req, res) =>{
     res.json(await traePost());
 } );
 
-app.post('/posts', async(req, res, next) =>{
+router.post('/posts', async(req, res, next) =>{
 
     try {
         const { titulo, url, descripcion } = req.body;
@@ -39,7 +24,7 @@ app.post('/posts', async(req, res, next) =>{
     
 } );
 
-app.put('/posts/like/:id', async(req, res, next)=>{
+router.put('/posts/like/:id', async(req, res, next)=>{
     try {
         await actualizaPost(req.params) 
         res.send('OK');
@@ -49,16 +34,17 @@ app.put('/posts/like/:id', async(req, res, next)=>{
     
 });
 
-app.delete('/posts/:id', async (req, res, next)=>{
+router.delete('/posts/:id', async (req, res, next)=>{
     try {
-        if(await eliminaPost(req.params)>0){
+        if(await eliminaPostt(req.params)>0){
             res.send('OK');
         } 
         else{
             res.status(400).send('EL ID enviado no existe');
         }
-    } catch (err) {
-        next(err);
+    } catch (error) {
+
+        next(error)
     }
     
 });
@@ -68,7 +54,6 @@ app.use((err, req, res, next) => {
     console.error(err); 
     res.status(500).json( 
         { message: err.stack }); 
-}); 
+});
 
-//Levanta el servidor
-app.listen(PORT,console.log("Servidor iniciado!!!"));
+module.exports= { router };
